@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import FadeInOnScroll from "./FadeInOnScroll";
 
 const StyledCard = styled.div`
   overflow: hidden;
@@ -66,25 +67,27 @@ const StyledCard = styled.div`
 `;
 
 const ProductCard = ({ product }) => (
-  <StyledCard>
-    <div className="product-image-container">
-      <span className="sale-badge">Sale</span>
-      <img
-        src={product.imageUrl}
-        alt={product.name}
-        className="product-image"
-      />
-    </div>
-    <div className="product-info">
-      <p className="product-name">{product.name}</p>
-      <p className="original-price">
-        Rs. {product.originalPrice.toLocaleString("en-IN")}.00
-      </p>
-      <p className="sale-price">
-        Rs. {product.salePrice.toLocaleString("en-IN")}.00
-      </p>
-    </div>
-  </StyledCard>
+  <FadeInOnScroll>
+    <StyledCard>
+      <div className="product-image-container">
+        <span className="sale-badge">Sale</span>
+        <img
+          src={product.imageUrl}
+          alt={product.name}
+          className="product-image"
+        />
+      </div>
+      <div className="product-info">
+        <p className="product-name">{product.name}</p>
+        <p className="original-price">
+          Rs. {product.originalPrice.toLocaleString("en-IN")}.00
+        </p>
+        <p className="sale-price">
+          Rs. {product.salePrice.toLocaleString("en-IN")}.00
+        </p>
+      </div>
+    </StyledCard>
+  </FadeInOnScroll>
 );
 
 export default ProductCard;
