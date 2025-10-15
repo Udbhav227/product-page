@@ -5,12 +5,16 @@ import { IoArrowForward } from "react-icons/io5";
 
 const FooterContainer = styled.footer`
   background-color: #f9f7f4;
-  padding: 0px 25px 20px 25px;
+  padding: 50px 25px 20px 25px;
   font-size: 0.9rem;
   color: #333;
 
-  .divider {
-    margin: 50px 0;
+  @media (min-width: 768px) {
+    padding: 80px 50px 40px 50px;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 100px 80px 50px 80px;
   }
 `;
 
@@ -18,13 +22,24 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 35px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 80px;
+  }
 `;
 
 const LinkSection = styled.div`
   h3 {
     margin-bottom: 15px;
     font-weight: 500;
-    font-size: 1.2rem;
   }
   ul {
     list-style: none;
@@ -40,46 +55,12 @@ const LinkSection = styled.div`
       text-decoration: underline;
     }
   }
-`;
 
-const InfoSection = styled.div`
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-
-  .logo {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-  }
-
-  p {
-    max-width: 400px;
-    line-height: 1.6;
-    color: #555;
-  }
-`;
-
-const ContactInfo = styled.div`
-  text-align: left;
-  font-style: normal;
-  color: #555;
-  p {
-    margin: 4px 0;
-  }
-  strong {
-    color: #333;
-  }
-`;
-
-const Socials = styled.div`
-  display: flex;
-  gap: 20px;
-  font-size: 1.2rem;
-  a {
-    color: #333;
+  @media (min-width: 768px) {
+    flex: 1;
+    h3 {
+      margin-bottom: 25px;
+    }
   }
 `;
 
@@ -90,6 +71,10 @@ const SubscribeForm = styled.div`
   margin: 15px 0;
   width: 100%;
   max-width: 350px;
+
+  @media (min-width: 768px) {
+    margin: 0;
+  }
 
   input {
     border: none;
@@ -109,6 +94,100 @@ const SubscribeForm = styled.div`
   }
 `;
 
+const InfoSection = styled.div`
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+
+  @media (min-width: 768px) {
+    flex: 2;
+    text-align: left;
+    align-items: flex-start;
+    gap: 20px;
+
+    ${SubscribeForm} {
+      display: none; /* Hide mobile form on desktop */
+    }
+  }
+
+  .logo {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    @media (min-width: 768px) {
+      transform: translateY(-15%);
+      font-size: 3rem;
+      margin-bottom: 0;
+    }
+  }
+
+  p {
+    max-width: 400px;
+    line-height: 1.6;
+    color: #555;
+  }
+
+  h3 {
+    @media (max-width: 767px) {
+      margin-top: 20px;
+    }
+    @media (min-width: 768px) {
+      display: none;
+    }
+  }
+`;
+
+const ContactInfo = styled.div`
+  font-style: normal;
+  color: #555;
+  p {
+    margin: 4px 0;
+  }
+  strong {
+    color: #333;
+  }
+  a {
+    color: #555;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+const Socials = styled.div`
+  display: flex;
+  gap: 20px;
+  font-size: 1.2rem;
+  a {
+    color: #333;
+  }
+`;
+
+const SubscribeSectionDesktop = styled.div`
+  display: none;
+  width: 100%;
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid #eee;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    display: flex;
+    max-width: 1200px;
+    margin: 50px auto 0 auto;
+  }
+
+  h3 {
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+`;
+
 const BottomBar = styled.div`
   text-align: center;
   margin-top: 40px;
@@ -116,6 +195,14 @@ const BottomBar = styled.div`
   border-top: 1px solid #eee;
   font-size: 0.75rem;
   color: #888;
+
+  @media (min-width: 768px) {
+    margin-top: 30px;
+    padding-top: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
   p {
     margin-bottom: 10px;
@@ -152,7 +239,6 @@ const Footer = () => {
   return (
     <>
       <FooterContainer>
-        <hr className="divider" />
         <ContentWrapper>
           <LinkSection>
             <h3>Info</h3>
@@ -174,6 +260,7 @@ const Footer = () => {
               </li>
             </ul>
           </LinkSection>
+
           <LinkSection>
             <h3>Quick links</h3>
             <ul>
@@ -194,6 +281,7 @@ const Footer = () => {
               </li>
             </ul>
           </LinkSection>
+
           <InfoSection>
             <div className="logo">Shop</div>
             <p>
@@ -233,8 +321,19 @@ const Footer = () => {
             </SubscribeForm>
           </InfoSection>
         </ContentWrapper>
+
+        <SubscribeSectionDesktop>
+          <h3>Subscribe to our emails</h3>
+          <SubscribeForm>
+            <input type="email" placeholder="Email" />
+            <button>
+              <IoArrowForward />
+            </button>
+          </SubscribeForm>
+        </SubscribeSectionDesktop>
+
         <BottomBar>
-          <p>&copy; 2025, Company Name India</p>
+          <p>&copy; 2025, Company Name</p>
           <div>
             <a href="#">Privacy policy</a> &middot;
             <a href="#">Shipping policy</a> &middot;
@@ -243,13 +342,16 @@ const Footer = () => {
           </div>
         </BottomBar>
       </FooterContainer>
-      {/* <WhatsAppButton
+
+      {/* 
+      <WhatsAppButton
         href="https://wa.me/911234567890"
         target="_blank"
         rel="noopener noreferrer"
       >
         <FaWhatsapp />
-      </WhatsAppButton> */}
+      </WhatsAppButton> 
+      */}
     </>
   );
 };
