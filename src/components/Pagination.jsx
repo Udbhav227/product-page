@@ -34,6 +34,10 @@ const Pagination = ({ totalPages }) => {
   const renderPageNumbers = () => {
     const pageNumbers = [];
 
+    if (totalPages <= 1) {
+      return null;
+    }
+
     if (currentPage > 1) {
       pageNumbers.push(
         <PageLink key="prev" to={`/?page=${currentPage - 1}`}>
@@ -42,30 +46,23 @@ const Pagination = ({ totalPages }) => {
       );
     }
 
-    if (totalPages > 1 && currentPage !== 1) {
+    pageNumbers.push(
+      <PageLink key={1} to="/?page=1" $active={1 === currentPage}>
+        1
+      </PageLink>
+    );
+
+    if (currentPage > 2) {
+      pageNumbers.push(<Ellipsis key="start-ellipsis">...</Ellipsis>);
+    } else if (currentPage === 1 && totalPages > 2) {
       pageNumbers.push(
-        <PageLink key={1} to="/?page=1" $active={1 === currentPage}>
-          1
+        <PageLink key={2} to="/?page=2" $active={false}>
+          2
         </PageLink>
       );
     }
 
     if (currentPage > 1 && currentPage < totalPages) {
-      // Add ellipsis if the current page is far from the first page (optional, but nice)
-      if (currentPage > 2) {
-        pageNumbers.push(<Ellipsis key="start-ellipsis">...</Ellipsis>);
-      }
-
-      pageNumbers.push(
-        <PageLink key={currentPage} to={`/?page=${currentPage}`} $active={true}>
-          {currentPage}
-        </PageLink>
-      );
-
-      if (currentPage < totalPages - 1) {
-        pageNumbers.push(<Ellipsis key="end-ellipsis">...</Ellipsis>);
-      }
-    } else {
       pageNumbers.push(
         <PageLink key={currentPage} to={`/?page=${currentPage}`} $active={true}>
           {currentPage}
@@ -73,17 +70,29 @@ const Pagination = ({ totalPages }) => {
       );
     }
 
-    if (totalPages > 1 && currentPage !== totalPages) {
+    if (currentPage < totalPages - 1) {
+      pageNumbers.push(<Ellipsis key="end-ellipsis">...</Ellipsis>);
+    } else if (currentPage === totalPages && totalPages > 2) {
       pageNumbers.push(
         <PageLink
-          key={totalPages}
-          to={`/?page=${totalPages}`}
-          $active={totalPages === currentPage}
+          key={totalPages - 1}
+          to={`/?page=${totalPages - 1}`}
+          $active={false}
         >
-          {totalPages}
+          {totalPages - 1}
         </PageLink>
       );
     }
+
+    pageNumbers.push(
+      <PageLink
+        key={totalPages}
+        to={`/?page=${totalPages}`}
+        $active={totalPages === currentPage}
+      >
+        {totalPages}
+      </PageLink>
+    );
 
     if (currentPage < totalPages) {
       pageNumbers.push(
