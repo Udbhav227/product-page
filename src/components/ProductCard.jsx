@@ -1,6 +1,16 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import FadeInOnScroll from "./FadeInOnScroll";
-import { useCart } from "../context/CartContext"; 
+import { useCart } from "../context/CartContext";
+
+const CardLinkWrapper = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
 
 const StyledCard = styled.div`
   display: flex;
@@ -72,7 +82,6 @@ const StyledCard = styled.div`
   }
 `;
 
-// -------------------------------------------------
 const AddToCartButton = styled.button`
   background-color: #333;
   color: white;
@@ -84,56 +93,66 @@ const AddToCartButton = styled.button`
   font-weight: 500;
   transition: background-color 0.2s, color 0.2s;
   margin-top: auto;
+  z-index: 5;
+  position: relative;
 
   &:hover {
     background-color: white;
     color: #333;
   }
 `;
-// -------------------------------------------------
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
-  
-  return (
-  <FadeInOnScroll>
-    <StyledCard>
-      <div className="product-image-container">
-        {product.isSale && <span className="sale-badge">Sale</span>}
-        <img
-          src={product.imageUrl}
-          alt={product.name}
-          className="product-image"
-        />
-      </div>
-      <div className="product-info">
-        <div>
-          <p className="product-name">{product.name}</p>
-          {product.isSale ? (
-            <>
-              <p className="original-price">
-                Rs. {product.originalPrice.toLocaleString("en-IN")}.00
-              </p>
-              <p className="sale-price">
-                Rs. {product.salePrice.toLocaleString("en-IN")}.00
-              </p>
-            </>
-          ) : (
-            <p className="sale-price">
-              Rs. {product.originalPrice.toLocaleString("en-IN")}.00
-            </p>
-          )}
-        </div>
 
-        {/* ---------------------------------------------- */}
-        <AddToCartButton onClick={() => addToCart(product)}>
-          Add to Cart
-        </AddToCartButton>
-        {/* ---------------------------------------------- */}
-      </div>
-    </StyledCard>
-  </FadeInOnScroll>
-  )
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(product);
+  };
+
+  return (
+    <FadeInOnScroll>
+      <StyledCard>
+        <CardLinkWrapper to={`/products/${product.id}`}>
+          <div className="product-image-container">
+            {product.is_sale && <span className="sale-badge">Sale</span>}
+            <img
+              src={product.image_url}
+              alt={product.name}
+              className="product-image"
+            />
+          </div>
+          <div className="product-info">
+            <div>
+              <p className="product-name">{product.name}</p>
+              {product.is_sale ? (
+                <>
+                  <p className="original-price">
+                    Rs. {product.original_price.toLocaleString("en-IN")}.00
+                  </p>
+                  <p className="sale-price">
+                    Rs. {product.sale_price.toLocaleString("en-IN")}.00
+                  </p>
+                </>
+              ) : (
+                <p className="sale-price">
+                  Rs. {product.original_price.toLocaleString("en-IN")}.00
+                </p>
+              )}
+            </div>
+          </div>
+        </CardLinkWrapper>
+        
+        <div style={{ padding: "0 5px" }}>
+          <AddToCartButton onClick={handleAddToCart}>
+            Add to Cart
+          </AddToCartButton>
+        </div>
+        
+      </StyledCard>
+    </FadeInOnScroll>
+  );
 };
 
 export default ProductCard;

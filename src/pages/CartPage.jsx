@@ -14,8 +14,6 @@ const CartPageContainer = styled.main`
   max-width: 1050px;
   margin: 60px auto;
   padding: 0 25px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 
   @media (max-width: 768px) {
     margin: 30px auto;
@@ -295,7 +293,7 @@ const CartPage = () => {
         <CartPageContainer>
           <EmptyCartContainer>
             <h2>Your cart is empty</h2>
-            <Link to="/">Continue shopping</Link>
+            <Link to="/products">Continue shopping</Link>
           </EmptyCartContainer>
         </CartPageContainer>
       </>
@@ -308,7 +306,7 @@ const CartPage = () => {
       <CartPageContainer>
         <PageHeader>
           <h1>Your cart</h1>
-          <Link to="/">Continue shopping</Link>
+          <Link to="/products">Continue shopping</Link>
         </PageHeader>
 
         <CartGrid>
@@ -321,12 +319,16 @@ const CartPage = () => {
           {cartItems.map((item) => (
             <ItemRow key={item.id}>
               <ProductDetails>
-                <img src={item.imageUrl} alt={item.name} />
+                <img src={item.image_url} alt={item.name} />
                 <div>
                   <h3>{item.name}</h3>
-                  <p>Rs. {item.salePrice.toLocaleString("en-IN")}.00</p>
-                  <p>Color: Yellow Gold</p>{" "}
-                  {/* item.color bhi chahiye rhega backend se*/}
+                  <p>Rs. {item.sale_price.toLocaleString("en-IN")}.00</p>
+                  <p>
+                    Color:{" "}
+                    {item.details.specifications.find(
+                      (s) => s.label === "Base Metal"
+                    )?.value || "N/A"}
+                  </p>
                 </div>
               </ProductDetails>
 
@@ -350,7 +352,7 @@ const CartPage = () => {
               </QuantityControl>
 
               <LineTotal>
-                Rs. {(item.salePrice * item.quantity).toLocaleString("en-IN")}
+                Rs. {(item.sale_price * item.quantity).toLocaleString("en-IN")}
                 .00
               </LineTotal>
             </ItemRow>

@@ -8,6 +8,7 @@ import {
 import App from "./App";
 import CartPage from "./pages/CartPage";
 import ProductListingPage from "./pages/ProductListingPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
 import { CartProvider } from "./context/CartContext";
 import "./reset.css";
 import "./index.css";
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "products",
         element: <ProductListingPage />,
+      },
+      {
+        path: "products/:productId",
+        element: <ProductDetailPage />,
       },
       {
         path: "cart",

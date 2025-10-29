@@ -3,13 +3,24 @@ import styled from "styled-components";
 import { FiMenu, FiSearch, FiShoppingBag } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import useScrollDirection from "../hooks/useScrollDirection";
+
+const NAV_HEIGHT = "80px";
 
 const NavContainer = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 1.5rem;
-  height: 80px;
+  height: ${NAV_HEIGHT};
+  
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #f9f7f4;
+  transition: top 0.3s ease-in-out;
+
+    top: ${(props) => (props.$scrollDirection === "down" ? `-${NAV_HEIGHT}` : "0")};
 `;
 
 const IconGroup = styled.div`
@@ -59,14 +70,15 @@ const CartBadge = styled.span`
 
 const Navbar = () => {
   const { cartCount } = useCart();
+  const scrollDirection = useScrollDirection();
 
   return (
-    <NavContainer>
+    <NavContainer $scrollDirection={scrollDirection}>
       <IconGroup>
         <FiMenu />
       </IconGroup>
 
-      <Logo to="/">Shop</Logo>
+      <Logo to="/products">Shop</Logo>
 
       <IconGroup>
         <FiSearch />
