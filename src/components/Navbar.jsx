@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { FiMenu, FiSearch, FiShoppingBag } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 const NavContainer = styled.header`
   display: flex;
@@ -8,9 +10,6 @@ const NavContainer = styled.header`
   align-items: center;
   padding: 0 1.5rem;
   height: 80px;
-  /* position: sticky;
-  top: 0;
-  z-index: 10; */
 `;
 
 const IconGroup = styled.div`
@@ -20,9 +19,12 @@ const IconGroup = styled.div`
   font-size: 1.4rem;
   color: #333;
 
-  & > svg {
+  & > * {
     cursor: pointer;
     transition: color 0.2s ease-in-out;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
 
     &:hover {
       color: #000;
@@ -30,29 +32,51 @@ const IconGroup = styled.div`
   }
 `;
 
-const Logo = styled.div`
+const Logo = styled(Link)`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   font-size: 2rem;
   color: #1a1a1a;
+  text-decoration: none;
 `;
 
-const Header = () => {
+const CartBadge = styled.span`
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: #1a1a1a;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: bold;
+`;
+
+const Navbar = () => {
+  const { cartCount } = useCart();
+
   return (
     <NavContainer>
       <IconGroup>
         <FiMenu />
       </IconGroup>
 
-      <Logo>Shop</Logo>
+      <Logo to="/">Shop</Logo>
 
       <IconGroup>
         <FiSearch />
-        <FiShoppingBag />
+        <Link to="/cart">
+          <FiShoppingBag />
+          {cartCount > 0 && <CartBadge>{cartCount}</CartBadge>}
+        </Link>
       </IconGroup>
     </NavContainer>
   );
 };
 
-export default Header;
+export default Navbar;

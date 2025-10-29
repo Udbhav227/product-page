@@ -6,7 +6,7 @@ const mockProducts = Array.from({ length: 352 }, (_, i) => ({
   imageUrl: demoRing,
   originalPrice: Math.floor(Math.random() * 50000) + 10000,
   salePrice: Math.floor(Math.random() * 40000) + 9000,
-  isSale: Math.random() > 0.2,
+  isSale: Math.random() > 0.3,
 }));
 
 export default mockProducts;

@@ -40,14 +40,14 @@ const Pagination = ({ totalPages }) => {
 
     if (currentPage > 1) {
       pageNumbers.push(
-        <PageLink key="prev" to={`/?page=${currentPage - 1}`}>
+        <PageLink key="prev" to={`?page=${currentPage - 1}`}>
           &lt;
         </PageLink>
       );
     }
 
     pageNumbers.push(
-      <PageLink key={1} to="/?page=1" $active={1 === currentPage}>
+      <PageLink key={1} to="?page=1" $active={1 === currentPage}>
         1
       </PageLink>
     );
@@ -56,7 +56,7 @@ const Pagination = ({ totalPages }) => {
       pageNumbers.push(<Ellipsis key="start-ellipsis">...</Ellipsis>);
     } else if (currentPage === 1 && totalPages > 2) {
       pageNumbers.push(
-        <PageLink key={2} to="/?page=2" $active={false}>
+        <PageLink key={2} to="?page=2" $active={false}>
           2
         </PageLink>
       );
@@ -64,7 +64,7 @@ const Pagination = ({ totalPages }) => {
 
     if (currentPage > 1 && currentPage < totalPages) {
       pageNumbers.push(
-        <PageLink key={currentPage} to={`/?page=${currentPage}`} $active={true}>
+        <PageLink key={currentPage} to={`?page=${currentPage}`} $active={true}>
           {currentPage}
         </PageLink>
       );
@@ -76,7 +76,7 @@ const Pagination = ({ totalPages }) => {
       pageNumbers.push(
         <PageLink
           key={totalPages - 1}
-          to={`/?page=${totalPages - 1}`}
+          to={`?page=${totalPages - 1}`}
           $active={false}
         >
           {totalPages - 1}
@@ -87,7 +87,7 @@ const Pagination = ({ totalPages }) => {
     pageNumbers.push(
       <PageLink
         key={totalPages}
-        to={`/?page=${totalPages}`}
+        to={`?page=${totalPages}`}
         $active={totalPages === currentPage}
       >
         {totalPages}
@@ -96,7 +96,7 @@ const Pagination = ({ totalPages }) => {
 
     if (currentPage < totalPages) {
       pageNumbers.push(
-        <PageLink key="next" to={`/?page=${currentPage + 1}`}>
+        <PageLink key="next" to={`?page=${currentPage + 1}`}>
           &gt;
         </PageLink>
       );
