@@ -31,78 +31,76 @@ const Pagination = ({ totalPages }) => {
   const [searchParams] = useSearchParams();
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
 
-  const renderPageNumbers = () => {
-    const pageNumbers = [];
+  const createPageLink = (page) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('page', page.toString());
+    return `?${newParams.toString()}`;
+  };
 
-    if (totalPages <= 1) {
-      return null;
-    }
+  const renderPageNumbers = () => {
+    const pages = [];
+    const maxPagesToShow = 5;
+    const pageBuffer = 2;
+    
+    if (totalPages <= 1) return null;
 
     if (currentPage > 1) {
-      pageNumbers.push(
-        <PageLink key="prev" to={`?page=${currentPage - 1}`}>
+      pages.push(
+        <PageLink key="prev" to={createPageLink(currentPage - 1)}>
           &lt;
         </PageLink>
       );
     }
 
-    pageNumbers.push(
-      <PageLink key={1} to="?page=1" $active={1 === currentPage}>
-        1
-      </PageLink>
-    );
+    let startPage = Math.max(1, currentPage - pageBuffer);
+    let endPage = Math.min(totalPages, currentPage + pageBuffer);
 
-    if (currentPage > 2) {
-      pageNumbers.push(<Ellipsis key="start-ellipsis">...</Ellipsis>);
-    } else if (currentPage === 1 && totalPages > 2) {
-      pageNumbers.push(
-        <PageLink key={2} to="?page=2" $active={false}>
-          2
+    if (currentPage - pageBuffer <= 1) {
+      endPage = Math.min(totalPages, maxPagesToShow);
+    }
+    if (currentPage + pageBuffer >= totalPages) {
+      startPage = Math.max(1, totalPages - maxPagesToShow + 1);
+    }
+    
+    if (startPage > 1) {
+      pages.push(
+        <PageLink key={1} to={createPageLink(1)} $active={1 === currentPage}>
+          1
+        </PageLink>
+      );
+      if (startPage > 2) {
+         pages.push(<Ellipsis key="start-ellipsis">...</Ellipsis>);
+      }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <PageLink key={i} to={createPageLink(i)} $active={i === currentPage}>
+          {i}
         </PageLink>
       );
     }
-
-    if (currentPage > 1 && currentPage < totalPages) {
-      pageNumbers.push(
-        <PageLink key={currentPage} to={`?page=${currentPage}`} $active={true}>
-          {currentPage}
+    
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        pages.push(<Ellipsis key="end-ellipsis">...</Ellipsis>);
+      }
+      pages.push(
+        <PageLink key={totalPages} to={createPageLink(totalPages)} $active={totalPages === currentPage}>
+          {totalPages}
         </PageLink>
       );
     }
-
-    if (currentPage < totalPages - 1) {
-      pageNumbers.push(<Ellipsis key="end-ellipsis">...</Ellipsis>);
-    } else if (currentPage === totalPages && totalPages > 2) {
-      pageNumbers.push(
-        <PageLink
-          key={totalPages - 1}
-          to={`?page=${totalPages - 1}`}
-          $active={false}
-        >
-          {totalPages - 1}
-        </PageLink>
-      );
-    }
-
-    pageNumbers.push(
-      <PageLink
-        key={totalPages}
-        to={`?page=${totalPages}`}
-        $active={totalPages === currentPage}
-      >
-        {totalPages}
-      </PageLink>
-    );
 
     if (currentPage < totalPages) {
-      pageNumbers.push(
-        <PageLink key="next" to={`?page=${currentPage + 1}`}>
+      pages.push(
+        <PageLink key="next" to={createPageLink(currentPage + 1)}>
           &gt;
         </PageLink>
       );
     }
 
-    return pageNumbers;
+    return pages;
   };
 
   return <PaginationContainer>{renderPageNumbers()}</PaginationContainer>;
