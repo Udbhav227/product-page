@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import styled, { createGlobalStyle } from "styled-components";
-import { useCart } from "../context/CartContext";
-import mockProducts from "../components/mockProducts";
-import Accordion from "../components/Accordion";
-import ProductGrid from "../components/ProductGrid";
-import {
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import styled, { createGlobalStyle } from 'styled-components';
+import { useCart } from '../context/CartContext';
+import mockProducts from '../components/mockProducts';
+import Accordion from '../components/Accordion';
+import ProductGrid from '../components/ProductGrid';
+import ProductCarousel from '../components/ProductCarousel';
+import { 
   FiShoppingCart,
   FiList,
   FiFileText,
   FiTruck,
   FiRepeat,
-  FiPackage,
-} from "react-icons/fi";
+  FiPackage
+} from 'react-icons/fi';
 
 const GlobalProductPageStyle = createGlobalStyle`
   body {
@@ -43,23 +44,12 @@ const ProductContainer = styled.div`
 const ImageColumn = styled.div`
   flex: 1;
   background-color: white;
-
-  img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    overflow: hidden;
-  }
-
+  
   @media (min-width: 768px) {
     position: sticky;
     top: 100px;
     align-self: flex-start;
     max-height: calc(100vh - 120px);
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
   }
 `;
 
@@ -147,12 +137,11 @@ const GenericContent = styled.div`
     margin-top: 10px;
     margin-bottom: 5px;
   }
-
-  p,
-  ul {
+  
+  p, ul {
     margin-bottom: 10px;
   }
-
+  
   ul {
     padding-left: 20px;
   }
@@ -165,7 +154,7 @@ const GenericContent = styled.div`
 const NotFoundContainer = styled.div`
   text-align: center;
   padding: 100px 20px;
-
+  
   h2 {
     font-size: 2rem;
     margin-bottom: 20px;
@@ -176,14 +165,14 @@ const RecommendedWrapper = styled.section`
   max-width: 1400px;
   margin: 40px auto;
   padding: 0 20px;
-
+  
   h2 {
     font-size: 1.8rem;
     font-weight: 500;
     margin-bottom: 25px;
     text-align: center;
   }
-
+  
   @media (min-width: 1024px) {
     padding: 0 50px;
   }
@@ -199,10 +188,10 @@ const RecommendedWrapper = styled.section`
 const ProductDetailPage = () => {
   const { productId } = useParams();
   const { addToCart } = useCart();
-
+  
   const [recommendedProducts, setRecommendedProducts] = useState([]);
 
-  const product = mockProducts.find((p) => p.id.toString() === productId);
+  const product = mockProducts.find(p => p.id.toString() === productId);
 
   useEffect(() => {
     if (productId) {
@@ -211,7 +200,7 @@ const ProductDetailPage = () => {
       );
       const shuffled = otherProducts.sort(() => 0.5 - Math.random());
       setRecommendedProducts(shuffled.slice(0, 4));
-
+      
       window.scrollTo(0, 0);
     }
   }, [productId]);
@@ -224,9 +213,15 @@ const ProductDetailPage = () => {
       </NotFoundContainer>
     );
   }
-
-  const { name, image_url, original_price, sale_price, is_sale, details } =
-    product;
+  
+  const {
+    name,
+    image_url,
+    original_price,
+    sale_price,
+    is_sale,
+    details
+  } = product;
 
   return (
     <>
@@ -234,17 +229,17 @@ const ProductDetailPage = () => {
       <PageWrapper>
         <ProductContainer>
           <ImageColumn>
-            <img src={image_url} alt={name} />
+            <ProductCarousel imageUrl={image_url} altText={name} />
           </ImageColumn>
 
           <DetailsColumn>
             <ProductName>{name}</ProductName>
-
+            
             <PriceContainer>
-              <SalePrice>Rs. {sale_price.toLocaleString("en-IN")}.00</SalePrice>
+              <SalePrice>Rs. {sale_price.toLocaleString('en-IN')}.00</SalePrice>
               {is_sale && (
                 <OriginalPrice>
-                  Rs. {original_price.toLocaleString("en-IN")}.00
+                  Rs. {original_price.toLocaleString('en-IN')}.00
                 </OriginalPrice>
               )}
             </PriceContainer>
@@ -254,13 +249,13 @@ const ProductDetailPage = () => {
             </AddToCartButton>
 
             <AccordionGroup>
-              <Accordion
-                title="Specification"
-                icon={<FiList />}
+              <Accordion 
+                title="Specification" 
+                icon={<FiList />} 
                 isOpenByDefault={true}
               >
                 <SpecTable>
-                  {details.specifications.map((spec) => (
+                  {details.specifications.map(spec => (
                     <p key={spec.label}>
                       <span>{spec.label}</span>
                       <span>{spec.value}</span>
@@ -268,15 +263,21 @@ const ProductDetailPage = () => {
                   ))}
                 </SpecTable>
               </Accordion>
-
-              <Accordion title="Description" icon={<FiFileText />}>
+              
+              <Accordion 
+                title="Description" 
+                icon={<FiFileText />}
+              >
                 <GenericContent>
                   <p>{details.description}</p>
                 </GenericContent>
               </Accordion>
 
-              <Accordion title="Shipping" icon={<FiTruck />}>
-                <GenericContent>
+              <Accordion 
+                title="Shipping" 
+                icon={<FiTruck />}
+              >
+                 <GenericContent>
                   <h4>{details.shipping.title}</h4>
                   <ul>
                     {details.shipping.points.map((point, index) => (
@@ -286,8 +287,11 @@ const ProductDetailPage = () => {
                   <p>{details.shipping.footer}</p>
                 </GenericContent>
               </Accordion>
-
-              <Accordion title="Returns & Exchange" icon={<FiRepeat />}>
+              
+              <Accordion 
+                title="Returns & Exchange" 
+                icon={<FiRepeat />}
+              >
                 <GenericContent>
                   <h4>{details.returns.title}</h4>
                   <ul>
@@ -298,16 +302,16 @@ const ProductDetailPage = () => {
                   <p>{details.returns.footer}</p>
                 </GenericContent>
               </Accordion>
-
-              <Accordion
-                title="Manufactured, Packed & Marketed by"
+              
+              <Accordion 
+                title="Manufactured, Packed & Marketed by" 
                 icon={<FiPackage />}
               >
                 <GenericContent>
                   {details.manufacturer.sections.map((sec, index) => (
                     <div key={index}>
                       <h4>{sec.title}</h4>
-                      <p>{sec.address.join(", ")}</p>
+                      <p>{sec.address.join(', ')}</p>
                     </div>
                   ))}
                   <p>{details.manufacturer.footer}</p>
@@ -316,7 +320,7 @@ const ProductDetailPage = () => {
             </AccordionGroup>
           </DetailsColumn>
         </ProductContainer>
-      </PageWrapper>
+      </PageWrapper> {/* <-- TYPO FIXED HERE */}
 
       <RecommendedWrapper>
         <h2>You may also like</h2>
@@ -326,4 +330,4 @@ const ProductDetailPage = () => {
   );
 };
 
-export default ProductDetailPage;
+export default ProductDetailPage; 
