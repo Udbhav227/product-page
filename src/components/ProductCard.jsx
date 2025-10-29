@@ -93,6 +93,7 @@ const AddToCartButton = styled.button`
   font-weight: 500;
   transition: background-color 0.2s, color 0.2s;
   margin-top: auto;
+  margin-bottom: 1rem;
   z-index: 5;
   position: relative;
 
